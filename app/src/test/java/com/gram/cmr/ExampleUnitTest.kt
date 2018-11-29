@@ -1,4 +1,4 @@
-package com.gram.myapplication
+package com.gram.cmr
 
 import org.junit.Test
 
