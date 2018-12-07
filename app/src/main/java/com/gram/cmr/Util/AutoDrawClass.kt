@@ -2,19 +2,20 @@ package com.jinwoo.catch_mind
 
 import android.content.Context
 import android.graphics.*
-import android.view.MotionEvent
 import android.view.View
 import android.graphics.Bitmap
 import android.util.Log
+import com.gram.cmr.Model.DrawModel
+import com.gram.cmr.Util.Event
 import com.gram.cmr.Util.SocketApplication
 import io.socket.client.Socket
 import io.socket.emitter.Emitter
-import kotlin.math.floor
 
 
 class AutoDrawClass(context: Context) : View(context) {
 
-    val socket: Socket = SocketApplication.socket
+    val eventClass: Event by lazy { Event }
+    val drawModel: DrawModel by lazy { DrawModel }
 
     val paintColor: Int = Color.parseColor("#000000")
 
@@ -23,17 +24,22 @@ class AutoDrawClass(context: Context) : View(context) {
     var canvasPaint: Paint? = null
     var drawCanvas: Canvas? = null
     var canvasBitmap: Bitmap? = null
+    var checked: Boolean = false
 
     init {
         setupDrawing()
         Thread{
-            socket.on("EVENT_Receiver", event)
+            while (true) {
+                checked = eventClass.receiveLine()
+                if(checked){
+                    drawPaint!!.color = drawModel.color
+                    drawPaint!!.strokeWidth = drawModel.width
+                    Event(drawModel.x, drawModel.y, drawModel.eventName)
+                }
+                checked = false
+                // rxjava의 옵저빙 안써서 이렇게 했네요. 옵저버 패턴을 쓰기에는 애매해서...
+            }
         }
-    }
-
-    fun setColor(color: String, Width: Float){
-        drawPaint!!.color = Color.parseColor(color)
-        drawPaint!!.strokeWidth = Width
     }
 
     fun setupDrawing() {
@@ -56,10 +62,6 @@ class AutoDrawClass(context: Context) : View(context) {
 
         canvas.drawBitmap(canvasBitmap, 0f, 0f, canvasPaint)
         canvas.drawPath(drawPath, drawPaint)
-    }
-
-    var event= Emitter.Listener { args ->
-        Event(args[0].toString().toFloat(), args[1].toString().toFloat(), args[2].toString())
     }
 
     fun Event(touchX: Float, touchY: Float, eventName: String?){

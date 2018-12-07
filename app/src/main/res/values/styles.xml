@@ -6,6 +6,20 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPurple">@color/colorPurple</item>
+        <item name="colorBlack">@color/colorBlack</item>
+        <item name="colorBlue">@color/colorBlue</item>
+        <item name="colorGray">@color/colorGray</item>
+        <item name="colorGreen">@color/colorGreen</item>
+        <item name="colorLightPurple">@color/colorLightPurple</item>
+        <item name="colorOrange">@color/colorOrange</item>
+        <item name="colorPink">@color/colorPink</item>
+        <item name="colorRed">@color/colorRed</item>
+        <item name="colorSky">@color/colorSky</item>
+        <item name="colorwordBlue">@color/colorwordBlue</item>
+        <item name="colorYellow">@color/colorYellow</item>
+        <item name="colorYellowGreen">@color/colorYellowGreen</item>
+        <item name="colorAmethyst">@color/colorAmethyst</item>
     </style>
 
 </resources>

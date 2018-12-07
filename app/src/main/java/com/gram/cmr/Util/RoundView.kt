@@ -9,7 +9,6 @@ import androidx.annotation.ColorInt
 
 
 class RoundView: View {
-    private var mRadius: Float = 0.toFloat()
     private var backgroundColor: Int? = 0
 
     constructor(context: Context) : super(context)

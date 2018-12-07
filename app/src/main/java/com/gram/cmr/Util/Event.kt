@@ -1,20 +1,20 @@
 package com.gram.cmr.Util
 
+import android.graphics.Color
+import com.gram.cmr.Model.DrawModel
+import com.gram.cmr.Model.PlayerModel
 import io.socket.client.Socket
 import io.socket.emitter.Emitter
 import org.json.JSONObject
 
-class Event {
-    val socket: Socket by lazy { SocketApplication.socket }
+object Event {
 
-    init {
-        start()
-        receivePass()
-        receiveLine()
-    }
+    val socket: Socket = SocketApplication.socket
+    val drawModel:  DrawModel by lazy { DrawModel }
+    val playerModel: PlayerModel by lazy { PlayerModel }
 
-    fun sendLine(x: Float, y: Float, color: Int, eventName: String) =
-            socket.emit("line", x as Double, y as Double, color, eventName)
+    fun sendLine(x: Float, y: Float, color: Int, width: Float, eventName: String) =
+            socket.emit("line", x.toDouble(), y.toDouble(), color, width.toDouble(),eventName)
 
     fun sendPass() = socket.emit("pass")
 
@@ -27,26 +27,27 @@ class Event {
         // 그림 화면에 pass 알림 보냄
     })
 
-    fun receiveLine() = socket.on("line", Line)
+    fun receiveLine(): Boolean {
+        socket.on("line", Line)
+        return true
+    }
 
     val Start = Emitter.Listener { args ->
 
         var jsonObject = args.get(0) as JSONObject
 
-        var word = jsonObject.getString("word")
-        var player = jsonObject.getBoolean("player")
-
-        // 대기 화면에 word와 player 전달
+        playerModel.word = jsonObject.getString("word")
+        playerModel.player = jsonObject.getBoolean("player")
     }
 
     val Line = Emitter.Listener { args ->
         var jsonObject = args.get(0) as JSONObject
 
-        var x: Float= jsonObject.getDouble("x") as Float
-        var y: Float = jsonObject.getDouble("y") as Float
-        var color: Int = jsonObject.getInt("color")
-        var eventName: String = jsonObject.getString("eventName")
-
-        // 그림 그리는 곳에 정보를 보냄
+        drawModel.x = jsonObject.getDouble("x").toFloat()
+        drawModel.y = jsonObject.getDouble("y").toFloat()
+        drawModel.color = jsonObject.getInt("color")
+        drawModel.width = jsonObject.getDouble("width").toFloat()
+        drawModel.eventName = jsonObject.getString("eventName")
+        return@Listener
     }
 }

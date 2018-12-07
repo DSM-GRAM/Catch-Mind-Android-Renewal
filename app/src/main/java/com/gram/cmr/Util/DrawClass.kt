@@ -5,12 +5,12 @@ import android.graphics.*
 import android.view.MotionEvent
 import android.view.View
 import android.graphics.Bitmap
+import com.gram.cmr.Util.Event
 import com.gram.cmr.Util.SocketApplication
 import io.socket.client.Socket
 
 class DrawClass(context: Context) : View(context) {
-
-    val socket: Socket = SocketApplication.socket
+    val eventClass: Event by lazy { Event }
 
     val paintColor: Int = Color.parseColor("#000000")
     var touchX = 0f
@@ -22,13 +22,11 @@ class DrawClass(context: Context) : View(context) {
     var drawCanvas: Canvas? = null
     var canvasBitmap: Bitmap? = null
 
-    init {
-        setupDrawing()
-    }
+    init { setupDrawing() }
 
-    fun setColor(color: String, Width: Float){
+    fun setColor(color: String, width: Float){
         drawPaint!!.color = Color.parseColor(color)
-        drawPaint!!.strokeWidth = Width
+        drawPaint!!.strokeWidth = width
     }
 
     fun setupDrawing() {
@@ -58,15 +56,15 @@ class DrawClass(context: Context) : View(context) {
 
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
-                socket.emit("EVENT_Sender", touchX, touchY, "ACTION_DOWN")
+                eventClass.sendLine(touchX, touchY, drawPaint!!.color, drawPaint!!.strokeWidth, "ACTION_DOWN")
                 drawPath!!.moveTo(touchX, touchY)
             }
             MotionEvent.ACTION_MOVE -> {
-                socket.emit("EVENT_Sender", touchX, touchY, "ACTION_MOVE")
+                eventClass.sendLine(touchX, touchY, drawPaint!!.color, drawPaint!!.strokeWidth, "ACTION_MOVE")
                 drawPath!!.lineTo(touchX, touchY)
             }
             MotionEvent.ACTION_UP -> {
-                socket.emit("EVENT_SENDER", touchX, touchY, "ACTION_UP")
+                eventClass.sendLine(touchX, touchY, drawPaint!!.color, drawPaint!!.strokeWidth, "ACTION_UP")
                 drawPath!!.lineTo(touchX, touchY)
                 drawCanvas!!.drawPath(drawPath, drawPaint)
                 drawPath!!.reset()
