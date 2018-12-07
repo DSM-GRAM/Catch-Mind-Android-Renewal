@@ -1,4 +1,4 @@
-package com.gram.cmr
+package com.gram.cmr.View
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
