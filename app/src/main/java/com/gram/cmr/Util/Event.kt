@@ -1,23 +1,21 @@
 package com.gram.cmr.Util
 
-import android.content.Intent
-import androidx.core.content.ContextCompat.startActivity
-import com.gram.cmr.MainActivity
+import com.gram.cmr.Model.DrawModel
+import com.gram.cmr.Model.PassModel
+import com.gram.cmr.Model.PlayerModel
 import io.socket.client.Socket
 import io.socket.emitter.Emitter
 import org.json.JSONObject
 
-class Event {
-    val socket: Socket by lazy { SocketApplication.socket }
+object Event {
 
-    init {
-        start()
-        receivePass()
-        receiveLine()
-    }
+    val socket: Socket = SocketApplication.socket
+    val drawModel:  DrawModel by lazy { DrawModel }
+    val playerModel: PlayerModel by lazy { PlayerModel }
+    val passModel: PassModel by lazy { passModel }
 
-    fun sendLine(x: Float, y: Float, color: Int, eventName: String) =
-            socket.emit("line", x as Double, y as Double, color, eventName)
+    fun sendLine(x: Float, y: Float, color: Int, width: Float, eventName: String) =
+            socket.emit("line", x.toDouble(), y.toDouble(), color, width.toDouble(),eventName)
 
     fun sendPass() = socket.emit("pass")
 
@@ -26,30 +24,43 @@ class Event {
         socket.on("start", Start)
     }
 
-    fun receivePass() = socket.on("pass", {
-        // 그림 화면에 pass 알림 보냄
-    })
+    fun roundChange() {
+        socket.emit("roundChange")
+        socket.on("chnage", Change)
+    }
 
-    fun receiveLine() = socket.on("line", Line)
+    fun receivePass() = socket.on("pass", { passModel.pass = true })
+
+    fun receiveLine(): Boolean {
+        socket.on("line", Line)
+        return true
+    }
+
+    fun gameEnd() = socket.emit("End_Game")
 
     val Start = Emitter.Listener { args ->
 
         var jsonObject = args.get(0) as JSONObject
 
-        var word = jsonObject.getString("word")
-        var player = jsonObject.getBoolean("player")
-
-        // 대기 화면에 word와 player 전달
+        playerModel.word = jsonObject.getString("word")
+        playerModel.player = jsonObject.getBoolean("player")
     }
 
     val Line = Emitter.Listener { args ->
         var jsonObject = args.get(0) as JSONObject
 
-        var x: Float= jsonObject.getDouble("x") as Float
-        var y: Float = jsonObject.getDouble("y") as Float
-        var color: Int = jsonObject.getInt("color")
-        var eventName: String = jsonObject.getString("eventName")
+        drawModel.x = jsonObject.getDouble("x").toFloat()
+        drawModel.y = jsonObject.getDouble("y").toFloat()
+        drawModel.color = jsonObject.getInt("color")
+        drawModel.width = jsonObject.getDouble("width").toFloat()
+        drawModel.eventName = jsonObject.getString("eventName")
+        return@Listener
+    }
 
-        // 그림 그리는 곳에 정보를 보냄
+    val Change = Emitter.Listener { args ->
+
+        var jsonObject = args.get(0) as JSONObject
+
+        playerModel.word = jsonObject.getString("word")
     }
 }
