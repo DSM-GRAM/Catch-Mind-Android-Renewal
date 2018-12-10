@@ -24,8 +24,8 @@ class DrawClass(context: Context) : View(context) {
 
     init { setupDrawing() }
 
-    fun setColor(color: String, width: Float){
-        drawPaint!!.color = Color.parseColor(color)
+    fun setColor(color: Int, width: Float){
+        drawPaint!!.color = resources.getColor(color, null)
         drawPaint!!.strokeWidth = width
     }
 

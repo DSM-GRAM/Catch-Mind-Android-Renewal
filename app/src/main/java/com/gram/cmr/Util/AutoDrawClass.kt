@@ -59,7 +59,6 @@ class AutoDrawClass(context: Context) : View(context) {
     }
 
     override fun onDraw(canvas: Canvas) {
-
         canvas.drawBitmap(canvasBitmap, 0f, 0f, canvasPaint)
         canvas.drawPath(drawPath, drawPaint)
     }

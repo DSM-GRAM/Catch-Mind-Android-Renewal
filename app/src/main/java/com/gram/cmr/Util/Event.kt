@@ -1,7 +1,7 @@
 package com.gram.cmr.Util
 
-import android.graphics.Color
 import com.gram.cmr.Model.DrawModel
+import com.gram.cmr.Model.PassModel
 import com.gram.cmr.Model.PlayerModel
 import io.socket.client.Socket
 import io.socket.emitter.Emitter
@@ -12,6 +12,7 @@ object Event {
     val socket: Socket = SocketApplication.socket
     val drawModel:  DrawModel by lazy { DrawModel }
     val playerModel: PlayerModel by lazy { PlayerModel }
+    val passModel: PassModel by lazy { passModel }
 
     fun sendLine(x: Float, y: Float, color: Int, width: Float, eventName: String) =
             socket.emit("line", x.toDouble(), y.toDouble(), color, width.toDouble(),eventName)
@@ -23,14 +24,19 @@ object Event {
         socket.on("start", Start)
     }
 
-    fun receivePass() = socket.on("pass", {
-        // 그림 화면에 pass 알림 보냄
-    })
+    fun roundChange() {
+        socket.emit("roundChange")
+        socket.on("chnage", Change)
+    }
+
+    fun receivePass() = socket.on("pass", { passModel.pass = true })
 
     fun receiveLine(): Boolean {
         socket.on("line", Line)
         return true
     }
+
+    fun gameEnd() = socket.emit("End_Game")
 
     val Start = Emitter.Listener { args ->
 
@@ -49,5 +55,12 @@ object Event {
         drawModel.width = jsonObject.getDouble("width").toFloat()
         drawModel.eventName = jsonObject.getString("eventName")
         return@Listener
+    }
+
+    val Change = Emitter.Listener { args ->
+
+        var jsonObject = args.get(0) as JSONObject
+
+        playerModel.word = jsonObject.getString("word")
     }
 }
