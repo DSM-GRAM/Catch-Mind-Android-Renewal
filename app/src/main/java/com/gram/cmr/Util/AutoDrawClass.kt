@@ -45,7 +45,7 @@ class AutoDrawClass(context: Context) : View(context) {
     fun setupDrawing() {
         drawPaint!!.color = paintColor
         drawPaint!!.isAntiAlias = true
-        drawPaint!!.strokeWidth = 5f
+        drawPaint!!.strokeWidth = 15f
         drawPaint!!.style = Paint.Style.STROKE
         drawPaint!!.strokeJoin = Paint.Join.ROUND
         drawPaint!!.strokeCap = Paint.Cap.ROUND

@@ -6,8 +6,6 @@ import android.view.MotionEvent
 import android.view.View
 import android.graphics.Bitmap
 import com.gram.cmr.Util.Event
-import com.gram.cmr.Util.SocketApplication
-import io.socket.client.Socket
 
 class DrawClass(context: Context) : View(context) {
     val eventClass: Event by lazy { Event }
@@ -24,15 +22,15 @@ class DrawClass(context: Context) : View(context) {
 
     init { setupDrawing() }
 
-    fun setColor(color: Int, width: Float){
-        drawPaint!!.color = resources.getColor(color, null)
+    fun setColor(color: String, width: Float){
+        drawPaint!!.color = Color.parseColor(color)
         drawPaint!!.strokeWidth = width
     }
 
     fun setupDrawing() {
         drawPaint!!.color = paintColor
         drawPaint!!.isAntiAlias = true
-        drawPaint!!.strokeWidth = 5f
+        drawPaint!!.strokeWidth = 15f
         drawPaint!!.style = Paint.Style.STROKE
         drawPaint!!.strokeJoin = Paint.Join.ROUND
         drawPaint!!.strokeCap = Paint.Cap.ROUND

@@ -54,15 +54,15 @@
                     android:elevation="10dp"
                     android:padding="3dp">
                     <TextView
-                        android:id="@+id/round"
+                        android:id="@+id/roundText"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:text="@{mainViewModel.round}"
+                        android:text="ROUND 1"
                         android:textSize="16dp"
                         android:textStyle="bold"
                         android:textColor="#648CBA"
                         android:fontFamily="@font/nanumsquarebold"
-                        android:gravity="center"/>
+                        android:gravity="center_horizontal"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -70,7 +70,8 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toLeftOf="@id/otherscore_layout"
                     android:id="@+id/myscore_layout"
-                    android:layout_margin="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="3dp"
                     android:layout_marginTop="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -81,31 +82,32 @@
                         android:layout_marginHorizontal="5dp"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:background="@drawable/score" />
+                        android:background="@drawable/score"/>
                     <TextView
                         android:layout_marginLeft="5dp"
                         android:id="@+id/myscore"
-                        android:layout_width="40dp"
+                        android:layout_width="38dp"
                         android:layout_height="match_parent"
-                        android:text="@{mainViewModel.myScore}"
+                        android:text="0"
                         android:textSize="14dp"
                         android:textStyle="bold"
                         android:textColor="#648CBA"
                         android:fontFamily="@font/nanumsquarebold"
-                        android:gravity="center"/>
+                        android:gravity="center" />
                 </LinearLayout>
                 <LinearLayout
                     app:layout_constraintLeft_toRightOf="@id/myscore_layout"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/round_layout"
                     android:id="@+id/otherscore_layout"
-                    android:layout_margin="5dp"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/round_white"
                     android:elevation="10dp"
-                    android:padding="5dp"
-                    android:layout_marginTop="10dp">
+                    android:padding="5dp">
                     <ImageView
                         android:layout_marginHorizontal="5dp"
                         android:layout_width="20dp"
@@ -116,7 +118,7 @@
                         android:id="@+id/otherscore"
                         android:layout_width="40dp"
                         android:layout_height="match_parent"
-                        android:text="@{mainViewModel.otherScore}"
+                        android:text="0"
                         android:textSize="14dp"
                         android:textStyle="bold"
                         android:textColor="#648CBA"
@@ -165,8 +167,7 @@
                             android:textColor="#648CBA"
                             android:textColorHint="#648CBA"
                             android:textSize="14dp"
-                            android:textStyle="bold"
-                            android:text="@{mainViewModel.answer}"/>
+                            android:textStyle="bold"/>
                     </LinearLayout>
 
                     <Button
@@ -203,7 +204,7 @@
                 android:id="@+id/timer"
                 android:layout_width="60dp"
                 android:layout_height="match_parent"
-                android:text="@{mainViewModel.timeString}"
+                android:text="3:00"
                 android:textSize="18dp"
                 android:textStyle="bold"
                 android:textColor="#648CBA"

@@ -12,7 +12,7 @@ class ReadyActivity: AppCompatActivity(), ReadyActivityNavigator {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ready)
-        val extraViewModel = ExtraViewModel(this)
+        ExtraViewModel(this)
     }
 
     override fun readyToMain() = startActivity<MainActivity>()

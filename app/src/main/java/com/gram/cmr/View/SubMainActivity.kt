@@ -2,6 +2,7 @@ package com.gram.cmr.View
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.WindowManager
 import androidx.databinding.DataBindingUtil
 import com.gram.cmr.R
 import com.gram.cmr.Util.SubMainActivityNavigator
@@ -20,4 +21,26 @@ class SubMainActivity : AppCompatActivity(), SubMainActivityNavigator {
     }
 
     override fun subMainToMain() = startActivity<MainActivity>()
+
+    override fun setTime(time: String) { runOnUiThread{ timer.setText(time) } }
+
+    override fun setRound(round: String) = roundText.setText(round)
+
+    override fun setMyScore(myScore: String) = myscore.setText(myScore)
+
+    override fun setOtherScore(otherScore: String) = otherscore.setText(otherScore)
+
+    override fun getAnswer(): String = answer_edit.text.toString()
+
+    override fun showDialog() {
+        val dialog = EndDialog(this)
+        var params: WindowManager.LayoutParams = dialog.window.attributes
+        params.width = WindowManager.LayoutParams.WRAP_CONTENT
+        params.height = WindowManager.LayoutParams.WRAP_CONTENT
+        dialog.window.attributes = params
+        dialog.show()
+        onStop()
+    }
+
+
 }
